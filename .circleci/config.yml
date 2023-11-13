@@ -4,7 +4,7 @@ parameters:
   distribution-scripts-repo:
     description: "Git url https://github.com/crystal-lang/distribution-scripts/"
     type: string
-    default: "https://github.com/crystal-lang/distribution-scripts.git"
+    default: "https://github.com/miry/distribution-scripts.git"
   distribution-scripts-version:
     description: "Git ref for version of https://github.com/crystal-lang/distribution-scripts/"
     type: string
