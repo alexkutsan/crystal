@@ -13,11 +13,23 @@ jobs:
     steps:
       - name: Download Crystal source
         uses: actions/checkout@v4
-      - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
-      - uses: docker://jhass/crystal:1.0.0-build
+      # - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
+      # - uses: docker://jhass/crystal:1.0.0-build
+      #   with:
+      #     args: make --touch generate_data
+      # - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
+      - name: crystal env
+        uses: docker://jhass/crystal:1.0.0-alpine-build
         with:
-          args: make --touch generate_data
-      - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
+          args: crystal env
+      - name: env
+        uses: docker://jhass/crystal:1.0.0-alpine-build
+        with:
+          args: env
+      - name: ls
+        uses: docker://jhass/crystal:1.0.0-alpine-build
+        with:
+          args: ls /usr/lib/crystal/core
       - name: Build Crystal
         uses: docker://jhass/crystal:1.0.0-alpine-build
         with:
@@ -69,11 +81,15 @@ jobs:
     steps:
       - name: Download Crystal source
         uses: actions/checkout@v4
-      - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
-      - uses: docker://jhass/crystal:1.0.0-build
+      # - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
+      # - uses: docker://jhass/crystal:1.0.0-build
+      #   with:
+      #     args: make --touch generate_data
+      # - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
+      - name: Build Crystal
+        uses: docker://jhass/crystal:1.0.0-alpine-build
         with:
-          args: make --touch generate_data
-      - run: ls -l --full-time scripts/generate_windows_zone_names.cr src/crystal/system/win32/zone_names.cr
+          args: crystal env
       - name: Build Crystal
         uses: docker://jhass/crystal:1.0.0-build
         with:
