@@ -52,7 +52,6 @@ ifeq ($(shell command -v ld.lld >/dev/null && uname -s),Linux)
 endif
 EXPORTS := \
   CRYSTAL_CONFIG_BUILD_COMMIT="$(CRYSTAL_CONFIG_BUILD_COMMIT)" \
-	CRYSTAL_CONFIG_PATH=$(CRYSTAL_CONFIG_PATH) \
 	SOURCE_DATE_EPOCH="$(SOURCE_DATE_EPOCH)"
 EXPORTS_BUILD := \
 	$(EXPORT_CC) \
