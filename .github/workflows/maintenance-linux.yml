@@ -21,7 +21,7 @@ env:
 
 jobs:
   build-linux:
-    name: Buildx ${{ matrix.arch }} Linux tarballs
+    name: Build ${{ matrix.arch }} Linux tarballs
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -63,8 +63,15 @@ jobs:
             !*-bundled.tar.gz
 
   package-docker:
-    name: Build the docker images
-    runs-on: ubuntu-latest
+    name: Build ${{ matrix.arch }} Docker images tarballs
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        include:
+          - arch: x86_64
+            runs-on: ubuntu-latest
+          - arch: aarch64
+            runs-on: [linux, ARM64]
     needs:
       - build-linux
     env:
@@ -73,10 +80,9 @@ jobs:
       - name: Download the linux tarballs
         uses: actions/download-artifact@v3
         with:
-          name: tarball
-          path: builds
+          name: tarball-${{ matrix.arch }}
 
-      - run: ls builds/
+      - run: ls && ls *
 
       - name: Build ubuntu runtime image
         uses: docker/build-push-action@v5
