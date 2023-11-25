@@ -81,15 +81,14 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: tarball-${{ matrix.arch }}
-
-      - run: ls && ls *
+          path: artifacts
 
       - name: Build ubuntu runtime image
         uses: docker/build-push-action@v5
         with:
           target: runtime
           file: docker/ubuntu.Dockerfile
-          build-contexts: tarball=builds/
+          build-contexts: tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}"
@@ -99,7 +98,7 @@ jobs:
         with:
           target: build
           file: docker/ubuntu.Dockerfile
-          build-contexts: tarball=builds/
+          build-contexts: tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}-build"
@@ -109,7 +108,7 @@ jobs:
         with:
           target: runtime
           file: docker/alpine.Dockerfile
-          build-contexts: tarball=builds/
+          build-contexts: tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}-alpine"
@@ -119,7 +118,7 @@ jobs:
         with:
           target: build
           file: docker/alpine.Dockerfile
-          build-contexts: tarball=builds/
+          build-contexts: tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}-alpine-build"
