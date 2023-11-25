@@ -43,7 +43,7 @@ jobs:
             crystal_version=${{ env.CRYSTAL_VERSION }}
             crystal_sha1=${{ env.CRYSTAL_SHA1 }}
           outputs: |
-            type=tar,path=linux/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar
+            type=tar,dest=linux/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar
 
       - name: Build tar.gz
         run: gzip -c linux/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar > linux/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
