@@ -43,24 +43,24 @@ jobs:
             crystal_version=${{ env.CRYSTAL_VERSION }}
             crystal_sha1=${{ env.CRYSTAL_SHA1 }}
           outputs: |
-            type=tar,dest=linux/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar
+            type=tar,dest=crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar
 
       - name: Build tar.gz
-        run: gzip -c linux/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar > linux/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
+        run: gzip -c crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar > crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
 
       - name: Upload tarballs as artifacts
         uses: actions/upload-artifact@v3
         with:
           name: release-${{ env.CRYSTAL_VERSION }}-${{ matrix.arch }}
-          path: linux/*.tar.gz
+          path: "*.tar.gz"
 
       - name: Upload tarball for use in the next step
         uses: actions/upload-artifact@v3
         with:
           name: tarball-${{ matrix.arch }}
           path: |
-            linux/*.tar.gz
-            !linux/*-bundled.tar.gz
+            *.tar.gz
+            !*-bundled.tar.gz
 
   package-docker:
     name: Build the docker images
@@ -74,16 +74,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: tarball
-          path: linux/build/
+          path: builds
 
-      - run: ls linux/build/
+      - run: ls builds/
 
       - name: Build ubuntu runtime image
         uses: docker/build-push-action@v5
         with:
           target: runtime
           file: docker/ubuntu.Dockerfile
-          build-contexts: tarball=linux/build/
+          build-contexts: tarball=builds/
           push: false
           load: true
           tags: "${{ env.tag }}"
@@ -93,7 +93,7 @@ jobs:
         with:
           target: build
           file: docker/ubuntu.Dockerfile
-          build-contexts: tarball=linux/build/
+          build-contexts: tarball=builds/
           push: false
           load: true
           tags: "${{ env.tag }}-build"
@@ -103,7 +103,7 @@ jobs:
         with:
           target: runtime
           file: docker/alpine.Dockerfile
-          build-contexts: tarball=linux/build/
+          build-contexts: tarball=builds/
           push: false
           load: true
           tags: "${{ env.tag }}-alpine"
@@ -113,7 +113,7 @@ jobs:
         with:
           target: build
           file: docker/alpine.Dockerfile
-          build-contexts: tarball=linux/build/
+          build-contexts: tarball=builds/
           push: false
           load: true
           tags: "${{ env.tag }}-alpine-build"
