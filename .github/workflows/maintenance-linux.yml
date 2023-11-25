@@ -17,7 +17,7 @@ on:
 env:
   CRYSTAL_VERSION: "${{ inputs.crystal_version || 'master' }}"
   CRYSTAL_SHA1: "${{ inputs.crystal_version || 'master' }}"
-  PREVIOUS_CRYSTAL_VERSION: "${{ inputs.previous_crystal_version || '1.10.1' }}"
+  PREVIOUS_CRYSTAL_VERSION: "${{ inputs.previous_crystal_version || '1.9.2' }}"
 
 jobs:
   build-linux:
