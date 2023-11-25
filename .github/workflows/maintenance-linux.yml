@@ -54,8 +54,10 @@ jobs:
           repository: crystal-lang/distribution-scripts
 
       - name: Build linux binaries
+        uses: docker://jhass/crystal:1.0.0-alpine-build
         working-directory: linux
-        run: make all #pull_images=true release=true
+        with:
+          args: make all #pull_images=true release=true
 
       # - name: Upload tarballs as artifacts
       #   uses: actions/upload-artifact@v3
