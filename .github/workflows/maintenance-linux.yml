@@ -48,22 +48,26 @@ jobs:
           outputs: |
             type=tar,dest=crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar
 
+      - name: Build bundled package
+        uses: docker/build-push-action@v5
+        with:
+          context: https://github.com/crystal-lang/distribution-scripts.git#refactor/linux-makefile-build-context
+          file: linux/bundled.dockerfile
+          build-contexts: |
+            crystal_base=.
+          build-args: |
+            crystal_version=${{ env.CRYSTAL_VERSION }}
+          outputs: |
+            type=tar,dest=crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar
+
       - name: Build tar.gz
         run: gzip -c crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar > crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
 
       - name: Upload tarballs as artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: release-${{ env.CRYSTAL_VERSION }}-${{ matrix.arch }}
+          name: crystal-${{ env.CRYSTAL_VERSION }}-${{ matrix.arch }}
           path: "*.tar.gz"
-
-      - name: Upload tarball for use in the next step
-        uses: actions/upload-artifact@v3
-        with:
-          name: tarball-${{ matrix.arch }}
-          path: |
-            *.tar.gz
-            !*-bundled.tar.gz
 
   package-docker:
     name: Build ${{ matrix.arch }} Docker images tarballs
