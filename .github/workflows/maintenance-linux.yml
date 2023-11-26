@@ -96,7 +96,7 @@ jobs:
           target: runtime
           file: docker/ubuntu.Dockerfile
           build-contexts: |
-            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
+            tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}"
@@ -108,7 +108,7 @@ jobs:
           target: build
           file: docker/ubuntu.Dockerfile
           build-contexts: |
-            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
+            tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}-build"
@@ -120,7 +120,7 @@ jobs:
           target: runtime
           file: docker/alpine.Dockerfile
           build-contexts: |
-            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
+            tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}-alpine"
@@ -132,7 +132,7 @@ jobs:
           target: build
           file: docker/alpine.Dockerfile
           build-contexts: |
-            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
+            tarball=artifacts/
           push: false
           load: true
           tags: "${{ env.tag }}-alpine-build"
