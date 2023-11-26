@@ -82,14 +82,15 @@ jobs:
         with:
           name: tarball-${{ matrix.arch }}
           path: artifacts
+      - run: ls artifacts
 
       - name: Build ubuntu runtime image
         uses: docker/build-push-action@v5
         with:
-          context: https://github.com/crystal-lang/distribution-scripts.git#master
+          context: https://github.com/crystal-lang/distribution-scripts.git#refactor/docker
           target: runtime
           file: docker/ubuntu.Dockerfile
-          build-args: |
+          build-contexts: |
             crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
@@ -98,9 +99,10 @@ jobs:
       - name: Build ubuntu build image
         uses: docker/build-push-action@v5
         with:
+          context: https://github.com/crystal-lang/distribution-scripts.git#refactor/docker
           target: build
           file: docker/ubuntu.Dockerfile
-          build-args: |
+          build-contexts: |
             crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
@@ -109,9 +111,10 @@ jobs:
       - name: Build alpine runtime image
         uses: docker/build-push-action@v5
         with:
+          context: https://github.com/crystal-lang/distribution-scripts.git#refactor/docker
           target: runtime
           file: docker/alpine.Dockerfile
-          build-args: |
+          build-contexts: |
             crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
@@ -120,9 +123,10 @@ jobs:
       - name: Build alpine build image
         uses: docker/build-push-action@v5
         with:
+          context: https://github.com/crystal-lang/distribution-scripts.git#refactor/docker
           target: build
           file: docker/alpine.Dockerfile
-          build-args: |
+          build-contexts: |
             crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
