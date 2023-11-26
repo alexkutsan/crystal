@@ -86,9 +86,11 @@ jobs:
       - name: Build ubuntu runtime image
         uses: docker/build-push-action@v5
         with:
+          context: https://github.com/crystal-lang/distribution-scripts.git#master
           target: runtime
           file: docker/ubuntu.Dockerfile
-          build-contexts: tarball=artifacts/
+          build-args: |
+            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
           tags: "${{ env.tag }}"
@@ -98,7 +100,8 @@ jobs:
         with:
           target: build
           file: docker/ubuntu.Dockerfile
-          build-contexts: tarball=artifacts/
+          build-args: |
+            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
           tags: "${{ env.tag }}-build"
@@ -108,7 +111,8 @@ jobs:
         with:
           target: runtime
           file: docker/alpine.Dockerfile
-          build-contexts: tarball=artifacts/
+          build-args: |
+            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
           tags: "${{ env.tag }}-alpine"
@@ -118,7 +122,8 @@ jobs:
         with:
           target: build
           file: docker/alpine.Dockerfile
-          build-contexts: tarball=artifacts/
+          build-args: |
+            crystal_targz=artifacts/crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar.gz
           push: false
           load: true
           tags: "${{ env.tag }}-alpine-build"
