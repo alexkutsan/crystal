@@ -48,13 +48,15 @@ jobs:
           outputs: |
             type=tar,dest=crystal-${{ env.CRYSTAL_VERSION }}-1-linux-${{ matrix.arch }}.tar
 
+      - run: ls
+
       - name: Build bundled package
         uses: docker/build-push-action@v5
         with:
           context: https://github.com/crystal-lang/distribution-scripts.git#refactor/linux-makefile-build-context
           file: linux/bundled.dockerfile
           build-contexts: |
-            crystal_base=.
+            crystal_base=./
           build-args: |
             crystal_version=${{ env.CRYSTAL_VERSION }}
           outputs: |
