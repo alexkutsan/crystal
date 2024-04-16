@@ -66,6 +66,8 @@ class Crystal::Program
   def macro_compile(filename)
     time = Time.monotonic
 
+    STDERR.puts "macro_compile: #{filename}"
+
     source = File.read(filename)
 
     # We store the executable relative to the cache directory for 'filename',
