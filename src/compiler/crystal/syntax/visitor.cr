@@ -32,6 +32,18 @@ module Crystal
       end
     end
 
+    def accept(visitor : CodeGenVisitor)
+      if visitor.visit_any self
+        if visitor.visit self
+          accept_children visitor
+        end
+        visitor.end_visit self
+        visitor.end_visit_any self
+      end
+    rescue exc
+      raise Exception.new("AST trace at #{location}: #{to_s}", cause: exc)
+    end
+
     def accept_children(visitor)
     end
   end

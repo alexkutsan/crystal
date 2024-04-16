@@ -547,8 +547,6 @@ module Crystal
         @last = float64(node.value)
       end
       false
-    rescue exc
-      raise Exception.new("Error with codegen for #{node.value.inspect} at #{node.location}", cause: exc)
     end
 
     def visit(node : StringLiteral)
