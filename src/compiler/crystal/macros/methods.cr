@@ -327,7 +327,7 @@ module Crystal
         ::raise exc
       rescue exc : Exception
         command = "#{Process.quote(original_filename)} #{Process.quote(run_args)}"
-        ::raise TypeException.for_node(node, "Error executing run: #{command}: #{exc.to_s}")
+        ::raise TypeException.for_node(node, "Error executing run: #{command}:\n#{exc.inspect_with_backtrace}")
       end
 
       if result.status.success?
