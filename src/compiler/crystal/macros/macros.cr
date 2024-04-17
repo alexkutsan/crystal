@@ -55,8 +55,11 @@ class Crystal::Program
 
     out_io = IO::Memory.new
     err_io = IO::Memory.new
+    STDERR.puts "macro_run: #{filename} #{args}"
     Process.run(compiled_file, args: args, output: out_io, error: err_io)
-    MacroRunResult.new(out_io.to_s, err_io.to_s, $?)
+    MacroRunResult.new(out_io.to_s, err_io.to_s, $?).tap do |mrr|
+      STDERR.puts mrr
+    end
   end
 
   record RequireWithTimestamp, filename : String, epoch : Int64 do
