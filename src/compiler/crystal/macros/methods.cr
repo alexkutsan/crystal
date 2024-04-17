@@ -318,6 +318,7 @@ module Crystal
         run_args << @last.to_macro_id
       end
 
+      STDERR.puts "interpret_run at #{node.location}: #{node}"
       result = @program.macro_run(filename, run_args)
       if result.status.success?
         @last = MacroId.new(result.stdout)
