@@ -319,7 +319,17 @@ module Crystal
       end
 
       STDERR.puts "interpret_run at #{node.location}: #{node}"
-      result = @program.macro_run(filename, run_args)
+      begin
+        result = @program.macro_run(filename, run_args)
+      rescue exc : TypeException
+        command = "#{Process.quote(original_filename)} #{Process.quote(run_args)}"
+        exc.inner = TypeException.for_node(node, "Error executing run: #{command}")
+        ::raise exc
+      rescue exc : Exception
+        command = "#{Process.quote(original_filename)} #{Process.quote(run_args)}"
+        ::raise TypeException.for_node(node, "Error executing run: #{command}: #{exc.to_s}")
+      end
+
       if result.status.success?
         @last = MacroId.new(result.stdout)
       else
