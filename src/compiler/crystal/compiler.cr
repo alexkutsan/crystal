@@ -199,7 +199,14 @@ module Crystal
       program = new_program(source)
       node = parse program, source
       node = program.semantic node, cleanup: !no_cleanup?
-      result = codegen program, node, source, output_filename unless @no_codegen
+      begin
+        result = codegen program, node, source, output_filename unless @no_codegen
+      rescue exc : TypeException
+        exc.inner = TypeException.for_node(node, "Error in codegen for:\n###########\n#{node.to_s}\n###########")
+        ::raise exc
+      rescue exc : Exception
+        ::raise TypeException.for_node(node, "Error in codegen for:\n###########\n#{node.to_s}\n###########")
+      end
 
       @progress_tracker.clear
       print_macro_run_stats(program)
